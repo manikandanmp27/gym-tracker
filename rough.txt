@@ -1,0 +1,14 @@
+Structure:
++-----------------------------------------------------------+
+|                        HEADER                             |
+|  [Logo & Gym Tracker Name]               [User Profile]   |
++---------------------+-------------------------------------+
+|                     |                                     |
+|                     |                                     |
+|   SIDEBAR NAV       |          MAIN CONTENT AREA          |
+|                     |                                     |
+|  - Dashboard        |          (Workouts, logs, graphs,   |
+|  - Log Workout      |           or dashboard statistics)  |
+|  - Analytics        |                                     |
+|                     |                                     |
++---------------------+-------------------------------------+
