@@ -1,15 +1,28 @@
-function Sidebar() {
+function Sidebar({ activeTab, setActiveTab }) {
   return (
     <aside className="app-sidebar">
       <nav className="sidebar-nav">
         <ul>
-          <li className="nav-item active">Dashboard</li>
-          <li className="nav-item">Log Workout</li>
-          <li className="nav-item">Analytics</li>
+          <li 
+            className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            Dashboard
+          </li>
+          <li 
+            className={`nav-item ${activeTab === 'log' ? 'active' : ''}`}
+            onClick={() => setActiveTab('log')}
+          >
+            Log Workout
+          </li>
+          <li className="nav-item">
+            Analytics
+          </li>
         </ul>
       </nav>
     </aside>
   );
 }
+
 
 export default Sidebar;
