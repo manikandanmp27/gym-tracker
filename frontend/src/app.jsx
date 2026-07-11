@@ -1,28 +1,20 @@
 import Header from './components/Header.jsx';
+import Sidebar from './components/Sidebar.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 function App() {
   return (
     <div className="app-container">
       <Header />
-
-      <aside className="app-sidebar">
-
-        <nav>
-          <ul>
-            <li>Dashboard</li>
-            <li>Log Workout</li>
-            <li>Analytics</li>
-          </ul>
-        </nav>
-      </aside>
+      <Sidebar />
 
       <main className="app-main">
-        <h1>My Personal Workout Space</h1>
-        <p>This is where your workouts and graphs will appear!</p>
+        <Dashboard />
       </main>
     </div>
   );
 }
+
 
 export default App;
 
