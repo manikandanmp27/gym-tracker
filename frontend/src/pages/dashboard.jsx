@@ -1,17 +1,10 @@
-function Dashboard() {
+function Dashboard({ workouts }) {
   const stats = [
-    { label: "Total Workouts", value: "12", color: "#3b82f6" },
+    { label: "Total Workouts", value: workouts.length.toString(), color: "#3b82f6" },
     { label: "Active Streak", value: "4 days", color: "#10b981" },
     { label: "Weight Lifted", value: "4,500 lbs", color: "#8b5cf6" }
   ];
 
-  const workouts = [
-    { id: 1, date: "Oct 12", type: "Push (Chest/Shoulders)", duration: "45 mins" },
-    { id: 2, date: "Oct 10", type: "Pull (Back/Biceps)", duration: "50 mins" },
-    { id: 3, date: "Oct 09", type: "Leg Day", duration: "60 mins" },
-    { id: 4, date: "Oct 08", type: "Cardio & Core", duration: "30 mins" }
-
-  ];
 
   return (
     <div className="dashboard-content">
