@@ -1,4 +1,4 @@
-function Dashboard({ workouts }) {
+function Dashboard({ workouts, onDeleteWorkout }) {
   const stats = [
     { label: "Total Workouts", value: workouts.length.toString(), color: "#3b82f6" },
     { label: "Active Streak", value: "4 days", color: "#10b981" },
@@ -27,11 +27,19 @@ function Dashboard({ workouts }) {
         <div className="workouts-list">
           {workouts.map((workout) => (
             <div key={workout.id} className="workout-row">
-              <div>
+              <div className="workout-info">
                 <span className="workout-date">{workout.date}</span>
                 <span className="workout-type">{workout.type}</span>
               </div>
-              <span className="workout-duration">{workout.duration}</span>
+              <div className="workout-actions">
+                <span className="workout-duration">{workout.duration}</span>
+                <button 
+                  className="delete-btn" 
+                  onClick={() => onDeleteWorkout(workout.id)}
+                >
+                  ✕
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -41,3 +49,4 @@ function Dashboard({ workouts }) {
 }
 
 export default Dashboard;
+

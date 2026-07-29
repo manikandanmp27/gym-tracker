@@ -25,7 +25,12 @@ function App() {
     setActiveTab('dashboard');
   };
 
-
+  const handleDeleteWorkout = (id) => {
+  const isConfirmed = window.confirm("Are you sure you want to delete this workout log?");
+  if (isConfirmed) {
+    setWorkouts(workouts.filter(workout => workout.id !== id));
+  }
+};
   return (
     <div className="app-container">
       <Header />
@@ -33,7 +38,7 @@ function App() {
 
       <main className="app-main">
         {activeTab === 'dashboard' ? (
-          <Dashboard workouts={workouts} />
+          <Dashboard workouts={workouts} onDeleteWorkout={handleDeleteWorkout} />
         ) : (
           <LogWorkout onAddWorkout={handleAddWorkout} />
         )}
@@ -48,5 +53,3 @@ function App() {
 
 
 export default App;
-
-
