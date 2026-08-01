@@ -160,6 +160,24 @@ body {
   border-radius: 10px;
 }
 
+.workout-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.workout-main-info {
+  display: flex;
+  align-items: center;
+}
+
+.workout-details {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  padding-left: 62px;
+}
+
+
 .workout-date {
   background-color: #334155;
   color: #f8fafc;

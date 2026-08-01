@@ -4,23 +4,28 @@ function LogWorkout({ onAddWorkout }) {
   const [exercise, setExercise] = useState('');
   const [category, setCategory] = useState('Push');
   const [duration, setDuration] = useState('');
+  const [weight, setWeight] = useState('');
+  const [reps, setReps] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!exercise || !duration) return;
+    if (!exercise || !duration || !weight || !reps) return;
 
     const newWorkout = {
       id: Date.now(),
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       type: `${category} (${exercise})`,
-      duration: `${duration} mins`
+      duration: `${duration} mins`,
+      weight: Number(weight),
+      reps: Number(reps)
     };
 
     onAddWorkout(newWorkout);
     setExercise('');
     setDuration('');
+    setWeight('');
+    setReps('');
   };
-
 
   return (
     <div className="log-workout-content">
@@ -60,6 +65,26 @@ function LogWorkout({ onAddWorkout }) {
           />
         </div>
 
+        <div className="form-group">
+          <label>Weight (lbs)</label>
+          <input
+            type="number"
+            placeholder="e.g. 135"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Reps</label>
+          <input
+            type="number"
+            placeholder="e.g. 10"
+            value={reps}
+            onChange={(e) => setReps(e.target.value)}
+          />
+        </div>
+
         <button type="submit" className="submit-btn">
           Save Workout
         </button>
@@ -69,3 +94,4 @@ function LogWorkout({ onAddWorkout }) {
 }
 
 export default LogWorkout;
+
