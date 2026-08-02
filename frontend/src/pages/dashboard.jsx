@@ -1,15 +1,32 @@
 function Dashboard({ workouts, onDeleteWorkout }) {
-  const totalWeight = workouts.reduce((acc, workout) => {
-    const weight = workout.weight || 0;
-    const reps = workout.reps || 0;
-    return acc + (weight * reps);
-  }, 0);
+  const getPR = (keyword) => {
+    const matching = workouts.filter(w => 
+      w.type.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    if (matching.length === 0) return "0 lbs";
+
+    const prWorkout = matching.reduce((max, curr) => {
+      const currentWeight = curr.weight || 0;
+      const maxWeight = max.weight || 0;
+      if (currentWeight > maxWeight) {
+        return curr;
+      } else if (currentWeight === maxWeight) {
+        return curr.reps > max.reps ? curr : max;
+      }
+      return max;
+    }, { weight: 0, reps: 0 });
+
+    return `${prWorkout.weight} lbs × ${prWorkout.reps} reps`;
+  };
 
   const stats = [
-    { label: "Total Workouts", value: workouts.length.toString(), color: "#3b82f6" },
-    { label: "Active Streak", value: "4 days", color: "#10b981" },
-    { label: "Weight Lifted", value: `${totalWeight.toLocaleString()} lbs`, color: "#8b5cf6" }
+    { label: "Bench Press PR", value: getPR("bench"), color: "#3b82f6" },
+    { label: "Squat PR", value: getPR("squat"), color: "#10b981" },
+    { label: "Deadlift PR", value: getPR("deadlift"), color: "#8b5cf6" },
+    { label: "Total Workouts", value: workouts.length.toString(), color: "#f59e0b" }
   ];
+
 
 
 

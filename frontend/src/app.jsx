@@ -6,31 +6,54 @@ import LogWorkout from './pages/LogWorkout.jsx';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [workouts, setWorkouts] = useState(() => {
-    const saved = localStorage.getItem('workouts');
-    return saved ? JSON.parse(saved) : [
-      { id: 1, date: "Oct 12", type: "Push (Chest/Shoulders)", duration: "45 mins" },
-      { id: 2, date: "Oct 10", type: "Pull (Back/Biceps)", duration: "50 mins" },
-      { id: 3, date: "Oct 09", type: "Leg Day", duration: "60 mins" },
-      { id: 4, date: "Oct 08", type: "Cardio & Core", duration: "30 mins" }
-    ];
-  });
+  const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('workouts', JSON.stringify(workouts));
-  }, [workouts]);
+    const getWorkouts = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/workouts');
+        const data = await res.json();
+        setWorkouts(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getWorkouts();
+  }, []);
 
-  const handleAddWorkout = (newWorkout) => {
-    setWorkouts([newWorkout, ...workouts]);
-    setActiveTab('dashboard');
+  const handleAddWorkout = async (newWorkout) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/workouts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newWorkout)
+      });
+      const data = await res.json();
+      setWorkouts([data, ...workouts]);
+      setActiveTab('dashboard');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleDeleteWorkout = (id) => {
-  const isConfirmed = window.confirm("Are you sure you want to delete this workout log?");
-  if (isConfirmed) {
-    setWorkouts(workouts.filter(workout => workout.id !== id));
-  }
-};
+
+  const handleDeleteWorkout = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this workout log?");
+    if (isConfirmed) {
+      try {
+        await fetch(`http://localhost:5000/api/workouts/${id}`, {
+          method: 'DELETE'
+        });
+        setWorkouts(workouts.filter(workout => workout.id !== id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+
   return (
     <div className="app-container">
       <Header />
