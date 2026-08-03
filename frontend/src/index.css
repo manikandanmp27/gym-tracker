@@ -281,6 +281,62 @@ body {
   background-color: #334155;
 }
 
+.analytics-card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 600px;
+}
+
+.analytics-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chart-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chart-label-group {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.chart-label-name {
+  font-weight: 500;
+  color: #f8fafc;
+}
+
+.chart-label-val {
+  color: #94a3b8;
+}
+
+.chart-bar-bg {
+  background-color: #0f172a;
+  height: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chart-bar-fill {
+  background-color: #3b82f6;
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease-out;
+}
+
+
 
 
 

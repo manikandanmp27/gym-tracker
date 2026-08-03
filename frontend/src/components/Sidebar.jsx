@@ -15,10 +15,14 @@ function Sidebar({ activeTab, setActiveTab }) {
           >
             Log Workout
           </li>
-          <li className="nav-item">
+          <li 
+            className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
+            onClick={() => setActiveTab('analytics')}
+          >
             Analytics
           </li>
         </ul>
+
       </nav>
     </aside>
   );

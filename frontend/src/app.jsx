@@ -3,6 +3,7 @@ import Header from './components/Header.jsx';
 import Sidebar from './components/Sidebar.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import LogWorkout from './pages/LogWorkout.jsx';
+import Analytics from './pages/Analytics.jsx';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -53,6 +54,19 @@ function App() {
     }
   };
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <Dashboard workouts={workouts} onDeleteWorkout={handleDeleteWorkout} />;
+      case 'log':
+        return <LogWorkout onAddWorkout={handleAddWorkout} />;
+      case 'analytics':
+        return <Analytics workouts={workouts} />;
+      default:
+        return <Dashboard workouts={workouts} onDeleteWorkout={handleDeleteWorkout} />;
+    }
+  };
+
 
   return (
     <div className="app-container">
@@ -60,11 +74,7 @@ function App() {
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="app-main">
-        {activeTab === 'dashboard' ? (
-          <Dashboard workouts={workouts} onDeleteWorkout={handleDeleteWorkout} />
-        ) : (
-          <LogWorkout onAddWorkout={handleAddWorkout} />
-        )}
+        {renderContent()}
       </main>
     </div>
   );
