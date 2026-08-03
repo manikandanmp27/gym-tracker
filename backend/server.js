@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { dbPromise, initDB } from './db.js';
 
 const app = express();
 const PORT = 5000;
@@ -7,33 +8,57 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-let workouts = [
-  { id: 1, date: "Oct 12", type: "Push (Chest/Shoulders)", duration: "45 mins", weight: 135, reps: 10 },
-  { id: 2, date: "Oct 10", type: "Pull (Back/Biceps)", duration: "50 mins", weight: 95, reps: 12 },
-  { id: 3, date: "Oct 09", type: "Leg Day", duration: "60 mins", weight: 185, reps: 8 }
-];
-
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Gym Tracker API is running and online' });
 });
 
-app.get('/api/workouts', (req, res) => {
-  res.json(workouts);
+app.get('/api/workouts', async (req, res) => {
+  try {
+    const db = await dbPromise;
+    const workouts = await db.all('SELECT * FROM workouts ORDER BY id DESC');
+    res.json(workouts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.post('/api/workouts', (req, res) => {
-  const newWorkout = req.body;
-  workouts = [newWorkout, ...workouts];
-  res.status(201).json(newWorkout);
+app.post('/api/workouts', async (req, res) => {
+  try {
+    const { date, type, duration, weight, reps } = req.body;
+    const db = await dbPromise;
+    const result = await db.run(
+      'INSERT INTO workouts (date, type, duration, weight, reps) VALUES (?, ?, ?, ?, ?)',
+      [date, type, duration, weight, reps]
+    );
+    const newWorkout = {
+      id: result.lastID,
+      date,
+      type,
+      duration,
+      weight,
+      reps
+    };
+    res.status(201).json(newWorkout);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.delete('/api/workouts/:id', (req, res) => {
-  const { id } = req.params;
-  workouts = workouts.filter(workout => workout.id !== Number(id));
-  res.json({ success: true, message: 'Workout deleted' });
+app.delete('/api/workouts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const db = await dbPromise;
+    await db.run('DELETE FROM workouts WHERE id = ?', [id]);
+    res.json({ success: true, message: 'Workout deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+initDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
+
 
