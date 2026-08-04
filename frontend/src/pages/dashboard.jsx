@@ -20,12 +20,47 @@ function Dashboard({ workouts, onDeleteWorkout }) {
     return `${prWorkout.weight} lbs × ${prWorkout.reps} reps`;
   };
 
+  const calculateStreak = () => {
+    if (workouts.length === 0) return "0 days";
+
+    const uniqueDates = [...new Set(workouts.map(w => {
+      const d = w.id > 100000 ? new Date(w.id) : new Date();
+      d.setHours(0, 0, 0, 0);
+      return d.getTime();
+    }))].sort((a, b) => b - a);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+
+    if (uniqueDates[0] !== today.getTime() && uniqueDates[0] !== yesterday.getTime()) {
+      return "0 days";
+    }
+
+    let streak = 1;
+    for (let i = 0; i < uniqueDates.length - 1; i++) {
+      const diff = uniqueDates[i] - uniqueDates[i + 1];
+      const oneDay = 24 * 60 * 60 * 1000;
+      if (diff === oneDay) {
+        streak++;
+      } else if (diff > oneDay) {
+        break;
+      }
+    }
+
+    return `${streak} ${streak === 1 ? 'day' : 'days'}`;
+  };
+
   const stats = [
     { label: "Bench Press PR", value: getPR("bench"), color: "#3b82f6" },
     { label: "Squat PR", value: getPR("squat"), color: "#10b981" },
     { label: "Deadlift PR", value: getPR("deadlift"), color: "#8b5cf6" },
-    { label: "Total Workouts", value: workouts.length.toString(), color: "#f59e0b" }
+    { label: "Active Streak", value: calculateStreak(), color: "#f59e0b" }
   ];
+
 
 
 
