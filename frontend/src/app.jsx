@@ -4,10 +4,26 @@ import Sidebar from './components/Sidebar.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import LogWorkout from './pages/LogWorkout.jsx';
 import Analytics from './pages/Analytics.jsx';
+import Login from './pages/login.jsx';
+import Signup from './pages/signup.jsx';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [workouts, setWorkouts] = useState([]);
+  const [authView, setAuthView] = useState('login');
+  
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     const getWorkouts = async () => {
@@ -54,6 +70,12 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setWorkouts([]);
+    setActiveTab('dashboard');
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -67,10 +89,29 @@ function App() {
     }
   };
 
+  if (!currentUser) {
+    if (authView === 'login') {
+      return (
+        <Login 
+          onSwitchToSignup={() => setAuthView('signup')} 
+          onLoginSuccess={(user) => setCurrentUser(user)} 
+        />
+      );
+    }
+    return (
+      <Signup 
+        onSwitchToLogin={() => setAuthView('login')} 
+        onSignupSuccess={(user) => {
+          setCurrentUser(user);
+          setAuthView('login');
+        }} 
+      />
+    );
+  }
 
   return (
     <div className="app-container">
-      <Header />
+      <Header currentUser={currentUser} onLogout={handleLogout} />
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="app-main">
@@ -79,10 +120,5 @@ function App() {
     </div>
   );
 }
-
-
-
-
-
 
 export default App;

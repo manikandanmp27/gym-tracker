@@ -38,6 +38,29 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 });
 
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    const db = await dbPromise;
+    const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    res.json({ id: user.id, username: user.username });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.get('/api/workouts', async (req, res) => {
   try {

@@ -1,4 +1,4 @@
-function Header() {
+function Header({ currentUser, onLogout }) {
   return (
     <header className="app-header">
       <div className="header-logo">
@@ -6,11 +6,17 @@ function Header() {
         <span>GymTracker</span>
       </div>
       <div className="header-profile">
-        <span>Active User</span>
-        <div className="profile-avatar">M</div>
+        <span>{currentUser?.username}</span>
+        <div className="profile-avatar">
+          {currentUser?.username?.[0]?.toUpperCase()}
+        </div>
+        <button className="logout-btn" onClick={onLogout}>
+          Logout
+        </button>
       </div>
     </header>
   );
 }
+
 
 export default Header;
