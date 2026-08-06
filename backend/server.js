@@ -64,8 +64,9 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/workouts', async (req, res) => {
   try {
+    const { userId } = req.query;
     const db = await dbPromise;
-    const workouts = await db.all('SELECT * FROM workouts ORDER BY id DESC');
+    const workouts = await db.all('SELECT * FROM workouts WHERE user_id = ? ORDER BY id DESC', [userId]);
     res.json(workouts);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -74,14 +75,15 @@ app.get('/api/workouts', async (req, res) => {
 
 app.post('/api/workouts', async (req, res) => {
   try {
-    const { date, type, duration, weight, reps } = req.body;
+    const { user_id, date, type, duration, weight, reps } = req.body;
     const db = await dbPromise;
     const result = await db.run(
-      'INSERT INTO workouts (date, type, duration, weight, reps) VALUES (?, ?, ?, ?, ?)',
-      [date, type, duration, weight, reps]
+      'INSERT INTO workouts (user_id, date, type, duration, weight, reps) VALUES (?, ?, ?, ?, ?, ?)',
+      [user_id, date, type, duration, weight, reps]
     );
     const newWorkout = {
       id: result.lastID,
+      user_id,
       date,
       type,
       duration,
@@ -93,6 +95,7 @@ app.post('/api/workouts', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 app.delete('/api/workouts/:id', async (req, res) => {
   try {

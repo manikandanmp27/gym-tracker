@@ -27,8 +27,9 @@ function App() {
 
   useEffect(() => {
     const getWorkouts = async () => {
+      if (!currentUser) return;
       try {
-        const res = await fetch('http://localhost:5000/api/workouts');
+        const res = await fetch(`http://localhost:5000/api/workouts?userId=${currentUser.id}`);
         const data = await res.json();
         setWorkouts(data);
       } catch (err) {
@@ -36,7 +37,7 @@ function App() {
       }
     };
     getWorkouts();
-  }, []);
+  }, [currentUser]);
 
   const handleAddWorkout = async (newWorkout) => {
     try {
@@ -45,7 +46,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newWorkout)
+        body: JSON.stringify({ ...newWorkout, user_id: currentUser.id })
       });
       const data = await res.json();
       setWorkouts([data, ...workouts]);
@@ -54,6 +55,7 @@ function App() {
       console.error(err);
     }
   };
+
 
 
   const handleDeleteWorkout = async (id) => {
