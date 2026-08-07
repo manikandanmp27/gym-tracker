@@ -20,11 +20,20 @@ function Dashboard({ workouts, onDeleteWorkout }) {
     return `${prWorkout.weight} lbs × ${prWorkout.reps} reps`;
   };
 
+  const formatDate = (dateStr) => {
+    if (!dateStr || !dateStr.includes('-')) return dateStr;
+    const parts = dateStr.split('-');
+    const d = new Date(parts[0], parts[1] - 1, parts[2]);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
   const calculateStreak = () => {
     if (workouts.length === 0) return "0 days";
 
     const uniqueDates = [...new Set(workouts.map(w => {
-      const d = w.id > 100000 ? new Date(w.id) : new Date();
+      if (!w.date || !w.date.includes('-')) return new Date().getTime();
+      const parts = w.date.split('-');
+      const d = new Date(parts[0], parts[1] - 1, parts[2]);
       d.setHours(0, 0, 0, 0);
       return d.getTime();
     }))].sort((a, b) => b - a);
@@ -61,10 +70,6 @@ function Dashboard({ workouts, onDeleteWorkout }) {
     { label: "Active Streak", value: calculateStreak(), color: "#f59e0b" }
   ];
 
-
-
-
-
   return (
     <div className="dashboard-content">
       <div className="dashboard-header">
@@ -88,7 +93,8 @@ function Dashboard({ workouts, onDeleteWorkout }) {
             <div key={workout.id} className="workout-row">
               <div className="workout-info">
                 <div className="workout-main-info">
-                  <span className="workout-date">{workout.date}</span>
+                  <span className="workout-date">{formatDate(workout.date)}</span>
+
                   <span className="workout-type">{workout.type}</span>
                 </div>
                 {workout.weight && workout.reps ? (

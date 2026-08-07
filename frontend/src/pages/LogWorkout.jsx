@@ -1,19 +1,21 @@
 import { useState } from 'react';
 
 function LogWorkout({ onAddWorkout }) {
+  const getTodayString = () => new Date().toISOString().split('T')[0];
+
   const [exercise, setExercise] = useState('');
   const [category, setCategory] = useState('Push');
+  const [date, setDate] = useState(getTodayString());
   const [duration, setDuration] = useState('');
   const [weight, setWeight] = useState('');
   const [reps, setReps] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!exercise || !duration || !weight || !reps) return;
+    if (!exercise || !date || !duration || !weight || !reps) return;
 
     const newWorkout = {
-      id: Date.now(),
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      date: date,
       type: `${category} (${exercise})`,
       duration: `${duration} mins`,
       weight: Number(weight),
@@ -22,6 +24,7 @@ function LogWorkout({ onAddWorkout }) {
 
     onAddWorkout(newWorkout);
     setExercise('');
+    setDate(getTodayString());
     setDuration('');
     setWeight('');
     setReps('');
@@ -56,7 +59,17 @@ function LogWorkout({ onAddWorkout }) {
         </div>
 
         <div className="form-group">
+          <label>Date</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
           <label>Duration (minutes)</label>
+
           <input
             type="number"
             placeholder="e.g. 45"
