@@ -21,7 +21,14 @@ function Sidebar({ activeTab, setActiveTab }) {
           >
             Analytics
           </li>
+          <li 
+            className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            Profile
+          </li>
         </ul>
+
 
       </nav>
     </aside>

@@ -6,6 +6,7 @@ import LogWorkout from './pages/LogWorkout.jsx';
 import Analytics from './pages/Analytics.jsx';
 import Login from './pages/login.jsx';
 import Signup from './pages/signup.jsx';
+import Profile from './pages/profile.jsx';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -86,6 +87,8 @@ function App() {
         return <LogWorkout onAddWorkout={handleAddWorkout} />;
       case 'analytics':
         return <Analytics workouts={workouts} />;
+      case 'profile':
+        return <Profile workouts={workouts} currentUser={currentUser} />;
       default:
         return <Dashboard workouts={workouts} onDeleteWorkout={handleDeleteWorkout} />;
     }
