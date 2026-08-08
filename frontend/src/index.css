@@ -41,6 +41,10 @@ body {
   background-color: #09090b;
   border-right: 1px solid #18181b;
   padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .app-main {
@@ -529,4 +533,28 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #27272a;
+}
+
+.sidebar-quote {
+  background-color: #121214;
+  border: 1px solid #18181b;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: auto;
+}
+
+.sidebar-quote p {
+  font-size: 0.8rem;
+  color: #71717a;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.quote-icon {
+  font-size: 1.6rem;
+  color: #d2fe02;
+  font-family: Georgia, serif;
+  line-height: 1;
+  display: block;
+  margin-bottom: 2px;
 }
