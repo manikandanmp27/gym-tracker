@@ -1,6 +1,8 @@
 function Dashboard({ workouts, onDeleteWorkout }) {
+  const safeWorkouts = Array.isArray(workouts) ? workouts : [];
+
   const getPR = (keyword) => {
-    const matching = workouts.filter(w => 
+    const matching = safeWorkouts.filter(w => 
       w.type.toLowerCase().includes(keyword.toLowerCase())
     );
 
@@ -28,9 +30,9 @@ function Dashboard({ workouts, onDeleteWorkout }) {
   };
 
   const calculateStreak = () => {
-    if (workouts.length === 0) return "0 days";
+    if (safeWorkouts.length === 0) return "0 days";
 
-    const uniqueDates = [...new Set(workouts.map(w => {
+    const uniqueDates = [...new Set(safeWorkouts.map(w => {
       if (!w.date || !w.date.includes('-')) return new Date().getTime();
       const parts = w.date.split('-');
       const d = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -89,12 +91,11 @@ function Dashboard({ workouts, onDeleteWorkout }) {
       <div className="recent-section">
         <h3>Recent Workouts</h3>
         <div className="workouts-list">
-          {workouts.map((workout) => (
+          {safeWorkouts.map((workout) => (
             <div key={workout.id} className="workout-row">
               <div className="workout-info">
                 <div className="workout-main-info">
                   <span className="workout-date">{formatDate(workout.date)}</span>
-
                   <span className="workout-type">{workout.type}</span>
                 </div>
                 {workout.weight && workout.reps ? (
@@ -122,4 +123,3 @@ function Dashboard({ workouts, onDeleteWorkout }) {
 }
 
 export default Dashboard;
-

@@ -29,7 +29,13 @@ const initDB = async () => {
       FOREIGN KEY (user_id) REFERENCES users (id)
     )
   `);
+
+  try {
+    await db.exec('ALTER TABLE workouts ADD COLUMN user_id INTEGER');
+  } catch (err) {
+  }
 };
+
 
 
 export { dbPromise, initDB };

@@ -1,12 +1,14 @@
 function Analytics({ workouts }) {
+  const safeWorkouts = Array.isArray(workouts) ? workouts : [];
   const categories = ['Push', 'Pull', 'Legs', 'Cardio'];
 
   const data = categories.map(cat => {
-    const count = workouts.filter(w => w.type.startsWith(cat)).length;
+    const count = safeWorkouts.filter(w => w.type.startsWith(cat)).length;
     return { name: cat, count };
   });
 
   const maxCount = Math.max(...data.map(d => d.count), 1);
+
 
   return (
     <div className="analytics-content">

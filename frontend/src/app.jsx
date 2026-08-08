@@ -32,9 +32,14 @@ function App() {
       try {
         const res = await fetch(`http://localhost:5000/api/workouts?userId=${currentUser.id}`);
         const data = await res.json();
-        setWorkouts(data);
+        if (res.ok && Array.isArray(data)) {
+          setWorkouts(data);
+        } else {
+          setWorkouts([]);
+        }
       } catch (err) {
         console.error(err);
+        setWorkouts([]);
       }
     };
     getWorkouts();

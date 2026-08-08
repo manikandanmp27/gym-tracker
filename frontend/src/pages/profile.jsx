@@ -1,16 +1,18 @@
 import { useState } from 'react';
 
 function Profile({ workouts, currentUser }) {
+  const safeWorkouts = Array.isArray(workouts) ? workouts : [];
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const heaviestLift = workouts.reduce((max, w) => {
+  const heaviestLift = safeWorkouts.reduce((max, w) => {
     const weight = w.weight || 0;
     return weight > max ? weight : max;
   }, 0);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,7 +73,7 @@ function Profile({ workouts, currentUser }) {
           </div>
           <div className="profile-info-row">
             <span className="profile-info-label">Total Logs</span>
-            <span className="profile-info-value">{workouts.length} sessions</span>
+            <span className="profile-info-value">{safeWorkouts.length} sessions</span>
           </div>
           <div className="profile-info-row">
             <span className="profile-info-label">Heaviest Lift</span>
