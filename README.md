@@ -4,6 +4,8 @@ A clean, modern, and privacy-focused full-stack web application designed to help
 
 The user interface features a custom flat-matte dark charcoal design with active electric lime highlights, optimized for high contrast and modern typography.
 
+🔗 **Live Link**: [https://gym-tracker-r9ma.onrender.com](https://gym-tracker-r9ma.onrender.com)
+
 ---
 
 ## 🚀 Key Features
