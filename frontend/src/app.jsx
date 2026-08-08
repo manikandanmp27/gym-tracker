@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from './components/Header.jsx';
 import Sidebar from './components/Sidebar.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import Dashboard from './pages/dashboard.jsx';
 import LogWorkout from './pages/LogWorkout.jsx';
 import Analytics from './pages/Analytics.jsx';
 import Login from './pages/login.jsx';
