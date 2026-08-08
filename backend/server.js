@@ -1,13 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { dbPromise, initDB } from './db.js';
 
 const app = express();
 const PORT = 5000;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Gym Tracker API is running and online' });
@@ -134,6 +140,10 @@ app.delete('/api/workouts/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 initDB().then(() => {

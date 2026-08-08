@@ -30,7 +30,7 @@ function App() {
     const getWorkouts = async () => {
       if (!currentUser) return;
       try {
-        const res = await fetch(`http://localhost:5000/api/workouts?userId=${currentUser.id}`);
+        const res = await fetch(`/api/workouts?userId=${currentUser.id}`);
         const data = await res.json();
         if (res.ok && Array.isArray(data)) {
           setWorkouts(data);
@@ -47,7 +47,7 @@ function App() {
 
   const handleAddWorkout = async (newWorkout) => {
     try {
-      const res = await fetch('http://localhost:5000/api/workouts', {
+      const res = await fetch('/api/workouts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ function App() {
     const isConfirmed = window.confirm("Are you sure you want to delete this workout log?");
     if (isConfirmed) {
       try {
-        await fetch(`http://localhost:5000/api/workouts/${id}`, {
+        await fetch(`/api/workouts/${id}`, {
           method: 'DELETE'
         });
         setWorkouts(workouts.filter(workout => workout.id !== id));
